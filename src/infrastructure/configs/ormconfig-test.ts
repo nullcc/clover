@@ -6,7 +6,7 @@ export const typeormConfigTest: TypeOrmModuleOptions = {
   port: 3306,
   username: 'root',
   password: '123456',
-  database: 'resource-keeper',
+  database: 'clover',
   entities: ['dist/**/*.orm-entity{.ts,.js}'],
   autoLoadEntities: true,
   // connectTimeoutMS: 2000,
