@@ -1,35 +1,14 @@
-import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import * as request from 'supertest';
-import { AppModule } from '@src/app.module';
-import { ExceptionInterceptor } from '@infrastructure/interceptors/exception.interceptor';
-import { typeormConfigTest } from '@config/ormconfig-test';
+import * as supertest from 'supertest';
+import { getApplication, getHttpServer } from '../../jestSetupAfterEnv';
 
-describe('PaymentController (e2e)', () => {
+describe('Find payments (e2e)', () => {
   let app: INestApplication;
+  let httpServer: supertest.SuperTest<supertest.Test>;
 
   beforeAll(async () => {
-    const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [TypeOrmModule.forRoot(typeormConfigTest), AppModule],
-    }).compile();
-    app = moduleFixture.createNestApplication();
-
-    const config = new DocumentBuilder()
-      .setTitle('Clover')
-      .setDescription('The Clover API Specification')
-      .setVersion('1.0')
-      .addTag('Clover')
-      .build();
-    const document = SwaggerModule.createDocument(app, config);
-    SwaggerModule.setup('docs', app, document);
-
-    app.useGlobalInterceptors(new ExceptionInterceptor());
-
-    app.enableShutdownHooks();
-
-    await app.init();
+    app = await getApplication();
+    httpServer = getHttpServer(app);
   });
 
   afterAll(async () => {
@@ -37,7 +16,7 @@ describe('PaymentController (e2e)', () => {
   });
 
   it('[GET] /api/v1/payments get payments', () => {
-    return request(app.getHttpServer())
+    return httpServer
       .get('/api/v1/payments')
       .expect(200)
       .expect([
@@ -67,7 +46,7 @@ describe('PaymentController (e2e)', () => {
   });
 
   it('[GET] /api/v1/payments/{paymentId} get payment', () => {
-    return request(app.getHttpServer())
+    return httpServer
       .get('/api/v1/payments/675b5c6f-52de-474f-aba6-f7717844a5e8')
       .expect(200)
       .expect({
@@ -83,17 +62,8 @@ describe('PaymentController (e2e)', () => {
       });
   });
 
-  it('[POST] /api/v1/payments create payment', () => {
-    return request(app.getHttpServer())
-      .post('/api/v1/payments')
-      .send({
-        type: 'PrivateToPrivate',
-        paymentAccountId: '6225760008219524',
-        receiptAccountId: '5264106268735359',
-        amount: 300,
-        currency: 'JPY',
-        comment: 'travel fee',
-      })
-      .expect(201);
+  it('[GET] /api/v1/payments/{paymentId} get payment with nonexistent payment id', async () => {
+    const resp = await httpServer.get('/api/v1/payments/foobar').expect(404);
+    expect(resp.body.message).toEqual("Payment with id 'foobar' not found");
   });
 });
