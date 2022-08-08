@@ -7,6 +7,8 @@ export type CreatePaymentError =
   | AmountExceedsTheLimitError
   | PaymentIsTooFrequentError;
 
+export type DeletePaymentError = PaymentNotFoundError;
+
 export class InvalidPaymentAccountIdError extends ExceptionBase {
   static readonly message = 'Invalid payment account id';
 
@@ -54,5 +56,15 @@ export class PaymentIsTooFrequentError extends ExceptionBase {
 
   constructor(metadata?: unknown) {
     super(PaymentIsTooFrequentError.message, metadata);
+  }
+}
+
+export class PaymentNotFoundError extends ExceptionBase {
+  static readonly message = 'Payment not found';
+
+  public readonly code = 'PAYMENT.NOT_FOUND';
+
+  constructor(metadata?: unknown) {
+    super(PaymentNotFoundError.message, metadata);
   }
 }

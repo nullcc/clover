@@ -7,8 +7,10 @@ import { PaymentRepository } from './database/payment/payment.repository';
 import { AccountOrmEntity } from './database/account/account.orm-entity';
 import { AccountRepository } from './database/account/account.repository';
 import { CreatePaymentHttpController } from './commands/create-payment/create-payment.http.controller';
+import { DeleteLeaseHttpController } from './commands/delete-payment/delete-payment.http.controller';
 import { FindPaymentsHttpController } from './queries/find-payments/find-payments.http.controller';
 import { CreatePaymentService } from './commands/create-payment/create-payment.service';
+import { DeleteLeaseService } from './commands/delete-payment/delete-payment.service';
 import {
   FindPaymentsQueryHandler,
   FindPaymentQueryHandler,
@@ -18,12 +20,13 @@ import { ServiceProvider } from './providers/service.provider';
 
 const httpControllers = [
   CreatePaymentHttpController,
+  DeleteLeaseHttpController,
   FindPaymentsHttpController,
 ];
 
 const repositories = [PaymentRepository, AccountRepository];
 
-const commandHandlers = [CreatePaymentService];
+const commandHandlers = [CreatePaymentService, DeleteLeaseService];
 
 const queryHandlers = [FindPaymentsQueryHandler, FindPaymentQueryHandler];
 

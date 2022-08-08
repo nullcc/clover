@@ -5,5 +5,6 @@ export const routesV1 = {
   payment: {
     root: paymentsRoot,
     get: `${paymentsRoot}/:paymentId`,
+    delete: `${paymentsRoot}/:paymentId`,
   },
 };
