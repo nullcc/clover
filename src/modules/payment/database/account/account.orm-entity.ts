@@ -9,4 +9,10 @@ export class AccountOrmEntity extends TypeormEntityBase {
 
   @Column()
   balance: number;
+
+  @Column()
+  transferLimit: number;
+
+  @Column()
+  phoneNumber: string;
 }

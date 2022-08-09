@@ -2,10 +2,13 @@ import { ExceptionBase } from '@src/libs/exceptions';
 
 export type CreatePaymentError =
   | InvalidPaymentAccountIdError
-  | InvalidReceiptAccountIdError
+  | InvalidRecipientAccountIdError
   | InsufficientBalanceError
-  | AmountExceedsTheLimitError
-  | PaymentIsTooFrequentError;
+  | AmountExceedsTheLimitError;
+
+export type TransferError =
+  | InsufficientBalanceError
+  | AmountExceedsTheLimitError;
 
 export type DeletePaymentError = PaymentNotFoundError;
 
@@ -19,13 +22,13 @@ export class InvalidPaymentAccountIdError extends ExceptionBase {
   }
 }
 
-export class InvalidReceiptAccountIdError extends ExceptionBase {
-  static readonly message = 'Invalid receipt account id';
+export class InvalidRecipientAccountIdError extends ExceptionBase {
+  static readonly message = 'Invalid recipient account id';
 
-  public readonly code = 'PAYMENT.INVALID_RECEIPT_ACCOUNT_ID';
+  public readonly code = 'PAYMENT.INVALID_recipient_ACCOUNT_ID';
 
   constructor(metadata?: unknown) {
-    super(InvalidReceiptAccountIdError.message, metadata);
+    super(InvalidRecipientAccountIdError.message, metadata);
   }
 }
 
@@ -46,16 +49,6 @@ export class AmountExceedsTheLimitError extends ExceptionBase {
 
   constructor(metadata?: unknown) {
     super(AmountExceedsTheLimitError.message, metadata);
-  }
-}
-
-export class PaymentIsTooFrequentError extends ExceptionBase {
-  static readonly message = 'Payment is too frequent';
-
-  public readonly code = 'PAYMENT.PAYMENT_IS_TOO_FREQUENT';
-
-  constructor(metadata?: unknown) {
-    super(PaymentIsTooFrequentError.message, metadata);
   }
 }
 

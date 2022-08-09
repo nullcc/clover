@@ -6,7 +6,7 @@ import {
   CannotSendNotificationError,
   ReceiverNotFoundError,
   PayloadTooLargeError,
-} from '@modules/payment/adapters/notification.adapter.port';
+} from '@modules/notification/adapters/notification.adapter.port';
 
 @Injectable()
 export class NotificationSmsAdapter

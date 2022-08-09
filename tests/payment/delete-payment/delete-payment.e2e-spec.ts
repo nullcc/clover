@@ -21,7 +21,7 @@ describe('Delete payment (e2e)', () => {
       .send({
         type: 'PrivateToPrivate',
         paymentAccountId: '6225760008219524',
-        receiptAccountId: '5264106268735359',
+        recipientAccountId: '5264106268735359',
         amount: 100,
         currency: 'JPY',
         comment: 'travel fee',

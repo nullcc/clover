@@ -11,11 +11,11 @@ export class FindPaymentsRequest implements FindPayments {
   readonly paymentAccountId: string;
 
   @ApiProperty({
-    description: 'Receipt account id',
+    description: 'recipient account id',
     required: false,
   })
   @IsString()
-  readonly receiptAccountId: string;
+  readonly recipientAccountId: string;
 }
 
 export class FindPaymentsHttpRequest

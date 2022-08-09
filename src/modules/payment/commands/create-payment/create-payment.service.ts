@@ -1,4 +1,3 @@
-import { Inject } from '@nestjs/common';
 import { CommandHandler } from '@nestjs/cqrs';
 import { PaymentRepositoryPort } from '@modules/payment/database/payment/payment.repository.port';
 import { AccountRepositoryPort } from '@modules/payment/database/account/account.repository.port';
@@ -10,16 +9,10 @@ import { PaymentEntity } from '@modules/payment/domain/entities/payment/payment.
 import { CreatePaymentError } from '@modules/payment/errors/payment.errors';
 import { AccountId } from '@modules/payment/domain/value-objects/account-id.value-object';
 import { PaymentAmount } from '@modules/payment/domain/value-objects/payment-amount.value-object';
-import { ServiceProvider } from '@modules/payment/providers/service.provider';
-import { NotificationAdapterPort } from '@modules/payment/adapters/notification.adapter.port';
 
 @CommandHandler(CreatePaymentCommand)
 export class CreatePaymentService extends CommandHandlerBase {
-  constructor(
-    protected readonly unitOfWork: UnitOfWork,
-    @Inject(ServiceProvider.NOTIFICATION_SERVICE)
-    protected readonly notificationAdapter: NotificationAdapterPort,
-  ) {
+  constructor(protected readonly unitOfWork: UnitOfWork) {
     super(unitOfWork);
   }
 
@@ -34,30 +27,28 @@ export class CreatePaymentService extends CommandHandlerBase {
     const paymentAccount = await accountRepository.findOneByIdOrThrow(
       command.paymentAccountId,
     );
-    const receiptAccount = await accountRepository.findOneByIdOrThrow(
-      command.receiptAccountId,
+    const recipientAccount = await accountRepository.findOneByIdOrThrow(
+      command.recipientAccountId,
     );
-    const payResult = paymentAccount.pay(command.amount);
-    receiptAccount.receipt(command.amount);
-    if (payResult.isErr) {
-      return Result.err(payResult.error);
-    }
-    const result = PaymentEntity.create({
+    const amount = new PaymentAmount({
+      value: command.amount,
+      currency: command.currency,
+    });
+    const payment = PaymentEntity.create({
       type: command.type,
       paymentAccountId: new AccountId(command.paymentAccountId),
-      receiptAccountId: new AccountId(command.receiptAccountId),
-      amount: new PaymentAmount({
-        value: command.amount,
-        currency: command.currency,
-      }),
+      recipientAccountId: new AccountId(command.recipientAccountId),
+      amount: amount,
       comment: command.comment,
     });
-    await this.notificationAdapter.notify('aaa', 'bbb');
+
+    const result = payment.transfer(paymentAccount, recipientAccount, amount);
+
     return result.unwrap(
-      async (payment) => {
+      async (res) => {
         await paymentRepository.save(payment);
         await accountRepository.save(paymentAccount);
-        await accountRepository.save(receiptAccount);
+        await accountRepository.save(recipientAccount);
         return Result.ok(payment);
       },
       (error) => Result.err(error),

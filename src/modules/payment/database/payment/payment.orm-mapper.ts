@@ -23,7 +23,7 @@ export class PaymentOrmMapper extends OrmMapper<
     const ormProps: OrmEntityProps<PaymentOrmEntity> = {
       type: props.type,
       paymentAccountId: props.paymentAccountId.value,
-      receiptAccountId: props.receiptAccountId.value,
+      recipientAccountId: props.recipientAccountId.value,
       amount: props.amount.value,
       currency: props.amount.currency,
       comment: props.comment,
@@ -38,7 +38,7 @@ export class PaymentOrmMapper extends OrmMapper<
     const props: PaymentProps = {
       type: ormEntity.type,
       paymentAccountId: new AccountId(ormEntity.paymentAccountId),
-      receiptAccountId: new AccountId(ormEntity.receiptAccountId),
+      recipientAccountId: new AccountId(ormEntity.recipientAccountId),
       amount: new PaymentAmount({
         value: ormEntity.amount,
         currency: ormEntity.currency,

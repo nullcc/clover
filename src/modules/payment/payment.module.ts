@@ -15,8 +15,6 @@ import {
   FindPaymentsQueryHandler,
   FindPaymentQueryHandler,
 } from './queries/find-payments/find-payments.query-handler';
-import { NotificationSmsAdapter } from '@infrastructure/adapters/notification-sms.adapter';
-import { ServiceProvider } from './providers/service.provider';
 
 const httpControllers = [
   CreatePaymentHttpController,
@@ -32,12 +30,7 @@ const queryHandlers = [FindPaymentsQueryHandler, FindPaymentQueryHandler];
 
 const adapters = [];
 
-const serviceProviders = [
-  {
-    provide: ServiceProvider.NOTIFICATION_SERVICE,
-    useValue: new NotificationSmsAdapter(),
-  },
-];
+const serviceProviders = [];
 
 const schedulers = [];
 

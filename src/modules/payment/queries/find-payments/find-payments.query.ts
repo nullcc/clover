@@ -4,12 +4,12 @@ export class FindPaymentsQuery extends Query {
   constructor(props: FindPaymentsQuery) {
     super();
     this.paymentAccountId = props.paymentAccountId;
-    this.receiptAccountId = props.receiptAccountId;
+    this.recipientAccountId = props.recipientAccountId;
   }
 
   readonly paymentAccountId: string;
 
-  readonly receiptAccountId: string;
+  readonly recipientAccountId: string;
 }
 
 export class FindPaymentQuery extends Query {

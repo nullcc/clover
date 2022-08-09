@@ -12,5 +12,5 @@ export const typeormConfigTest: TypeOrmModuleOptions = {
   // connectTimeoutMS: 2000,
   // logging: ['error', 'migration', 'schema'],
   synchronize: true,
-  logging: true,
+  logging: false,
 };

@@ -4,7 +4,6 @@ import {
   HttpStatus,
   Post,
   BadRequestException,
-  HttpException,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { CommandBus } from '@nestjs/cqrs';
@@ -15,10 +14,9 @@ import { CreatePaymentHttpRequest } from './create-payment.request.dto';
 import {
   CreatePaymentError,
   InvalidPaymentAccountIdError,
-  InvalidReceiptAccountIdError,
+  InvalidRecipientAccountIdError,
   InsufficientBalanceError,
   AmountExceedsTheLimitError,
-  PaymentIsTooFrequentError,
 } from '@modules/payment/errors/payment.errors';
 import { PaymentEntity } from '@modules/payment/domain/entities/payment/payment.entity';
 import { PaymentHttpResponse } from '@modules/payment/dtos/payment.response.dto';
@@ -37,9 +35,6 @@ export class CreatePaymentHttpController {
   @ApiResponse({
     status: HttpStatus.BAD_REQUEST,
   })
-  @ApiResponse({
-    status: HttpStatus.TOO_MANY_REQUESTS,
-  })
   async create(
     @Body() body: CreatePaymentHttpRequest,
   ): Promise<PaymentHttpResponse | void> {
@@ -49,20 +44,13 @@ export class CreatePaymentHttpController {
     if (createPaymentResult.isErr) {
       if (
         createPaymentResult.error instanceof InvalidPaymentAccountIdError ||
-        createPaymentResult.error instanceof InvalidReceiptAccountIdError ||
+        createPaymentResult.error instanceof InvalidRecipientAccountIdError ||
         createPaymentResult.error instanceof InsufficientBalanceError ||
         createPaymentResult.error instanceof AmountExceedsTheLimitError
       ) {
         throw new BadRequestException(
           createPaymentResult.error.message,
           (createPaymentResult.error as any).metadata,
-        );
-      }
-      if (createPaymentResult.error instanceof PaymentIsTooFrequentError) {
-        throw HttpException.createBody(
-          createPaymentResult.error.message,
-          (createPaymentResult.error as any).metadata,
-          HttpStatus.TOO_MANY_REQUESTS,
         );
       }
     }

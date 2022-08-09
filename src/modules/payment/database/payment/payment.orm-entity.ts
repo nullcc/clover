@@ -15,7 +15,7 @@ export class PaymentOrmEntity extends TypeormEntityBase {
   paymentAccountId: string;
 
   @Column()
-  receiptAccountId: string;
+  recipientAccountId: string;
 
   @Column()
   amount: number;

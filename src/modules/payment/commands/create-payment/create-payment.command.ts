@@ -9,7 +9,7 @@ export class CreatePaymentCommand extends Command {
     super(props);
     this.type = props.type;
     this.paymentAccountId = props.paymentAccountId;
-    this.receiptAccountId = props.receiptAccountId;
+    this.recipientAccountId = props.recipientAccountId;
     this.amount = props.amount;
     this.currency = props.currency;
     this.comment = props.comment;
@@ -19,7 +19,7 @@ export class CreatePaymentCommand extends Command {
 
   readonly paymentAccountId: string;
 
-  readonly receiptAccountId: string;
+  readonly recipientAccountId: string;
 
   readonly amount: number;
 

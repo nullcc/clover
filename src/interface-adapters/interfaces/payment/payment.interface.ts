@@ -3,7 +3,7 @@ import { ModelBase } from '@libs/ddd/interface-adapters/interfaces/model.base.in
 export interface Payment extends ModelBase {
   type: string;
   paymentAccountId: string;
-  receiptAccountId: string;
+  recipientAccountId: string;
   amount: number;
   currency: string;
   comment: string;

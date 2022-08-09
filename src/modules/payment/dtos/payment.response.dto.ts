@@ -10,7 +10,7 @@ export class PaymentResponse extends ResponseBase implements Payment {
     const props = payment.getPropsCopy();
     this.type = props.type;
     this.paymentAccountId = props.paymentAccountId.value;
-    this.receiptAccountId = props.receiptAccountId.value;
+    this.recipientAccountId = props.recipientAccountId.value;
     this.amount = props.amount.value;
     this.currency = props.amount.currency;
     this.comment = props.comment;
@@ -27,9 +27,9 @@ export class PaymentResponse extends ResponseBase implements Payment {
   paymentAccountId: string;
 
   @ApiProperty({
-    description: 'Receipt account Id',
+    description: 'recipient account Id',
   })
-  receiptAccountId: string;
+  recipientAccountId: string;
 
   @ApiProperty({
     description: 'Amount',

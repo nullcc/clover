@@ -17,10 +17,10 @@ export class CreatePaymentRequest implements CreatePayment {
   readonly paymentAccountId: string;
 
   @ApiProperty({
-    description: 'Receipt account ID',
+    description: 'recipient account ID',
   })
   @IsString()
-  readonly receiptAccountId: string;
+  readonly recipientAccountId: string;
 
   @ApiProperty({
     description: 'Amount',

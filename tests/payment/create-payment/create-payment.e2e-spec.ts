@@ -21,7 +21,7 @@ describe('Create payment (e2e)', () => {
       .send({
         type: 'PrivateToPrivate',
         paymentAccountId: '6225760008219524',
-        receiptAccountId: '5264106268735359',
+        recipientAccountId: '5264106268735359',
         amount: 300,
         currency: 'JPY',
         comment: 'travel fee',
@@ -38,7 +38,7 @@ describe('Create payment (e2e)', () => {
       .send({
         type: 'PrivateToPrivate',
         paymentAccountId: '6225760008219525',
-        receiptAccountId: '5264106268735359',
+        recipientAccountId: '5264106268735359',
         amount: 300,
         currency: 'JPY',
         comment: 'travel fee',
@@ -55,8 +55,8 @@ describe('Create payment (e2e)', () => {
       .send({
         type: 'PrivateToPrivate',
         paymentAccountId: '6225760008219524',
-        receiptAccountId: '5264106268735359',
-        amount: 3000,
+        recipientAccountId: '5264106268735359',
+        amount: 2000,
         currency: 'JPY',
         comment: 'travel fee',
       })
@@ -70,7 +70,7 @@ describe('Create payment (e2e)', () => {
       .send({
         type: 'PrivateToPrivate',
         paymentAccountId: '6225760008219524',
-        receiptAccountId: '5264106268735359',
+        recipientAccountId: '5264106268735359',
         amount: 100,
         currency: 'XXX',
         comment: 'travel fee',
@@ -78,5 +78,20 @@ describe('Create payment (e2e)', () => {
       .expect(400);
     expect(resp.body.message).toEqual('Unsupported currency: XXX');
     return;
+  });
+
+  it('[POST] /api/v1/payments create payment with amount which exceeds the limit', async () => {
+    const resp = await httpServer
+      .post('/api/v1/payments')
+      .send({
+        type: 'PrivateToPrivate',
+        paymentAccountId: '6225760008219524',
+        recipientAccountId: '5264106268735359',
+        amount: 20000,
+        currency: 'JPY',
+        comment: 'travel fee',
+      })
+      .expect(400);
+    expect(resp.body.message).toEqual('Amount exceeds the limit');
   });
 });

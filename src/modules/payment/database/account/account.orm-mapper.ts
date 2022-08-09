@@ -21,6 +21,8 @@ export class AccountOrmMapper extends OrmMapper<
     const props = entity.getPropsCopy();
     const ormProps: OrmEntityProps<AccountOrmEntity> = {
       balance: props.balance,
+      transferLimit: props.transferLimit,
+      phoneNumber: props.phoneNumber,
     };
     return ormProps;
   }
@@ -32,6 +34,8 @@ export class AccountOrmMapper extends OrmMapper<
     const props: AccountProps = {
       id: new AccountId(ormEntity.id),
       balance: ormEntity.balance,
+      transferLimit: ormEntity.transferLimit,
+      phoneNumber: ormEntity.phoneNumber,
     };
     return { id, props };
   }
