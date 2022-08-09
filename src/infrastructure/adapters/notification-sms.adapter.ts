@@ -14,7 +14,7 @@ export class NotificationSmsAdapter
   implements NotificationAdapterPort
 {
   constructor() {
-    super(new ConsoleLogger('NotificationCenterAdapter'));
+    super(new ConsoleLogger('NotificationAdapter'));
   }
 
   async notify(

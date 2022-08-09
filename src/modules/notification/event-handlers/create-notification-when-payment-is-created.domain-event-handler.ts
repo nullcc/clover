@@ -13,8 +13,8 @@ export class CreateNotificationWhenPaymentIsCreatedDomainEventHandler extends Do
 
   // Handle a Domain Event by perform changes to other aggregates (inside the same Domain).
   async handle(event: PaymentCreatedDomainEvent): Promise<void> {
-    const messageForPayer = `You account [${event.paymentAccountId}] has transferred payment ${event.currency} ${event.amount} to [${event.recipientAccountId}]`;
-    const messageForRecipient = `You account [${event.recipientAccountId}] has received payment ${event.currency} ${event.amount} from [${event.paymentAccountId}]`;
+    const messageForPayer = `Your account [${event.paymentAccountId}] has transferred payment ${event.currency} ${event.amount} to [${event.recipientAccountId}]`;
+    const messageForRecipient = `Your account [${event.recipientAccountId}] has received payment ${event.currency} ${event.amount} from [${event.paymentAccountId}]`;
     await this.notificationAdapter.notify(
       event.payerPhoneNumber,
       messageForPayer,
